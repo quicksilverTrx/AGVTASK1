@@ -25,10 +25,10 @@ include_directories(  ${catkin_INCLUDE_DIRS}  ${OpenCV_INCLUDE_DIRS} )
 add_executable(talk src/talk.cpp)
 
 target_link_libraries ( talk ${OpenCV_LIBS} ${catkin_LIBRARIES} )
-add_dependencies(talk agv1_generate_messages_cpp)
+add_dependencies(talk AGVTASK1_generate_messages_cpp)
 add_executable(listen src/listen.cpp)
 target_link_libraries(listen ${OpenCV_LIBS} ${catkin_LIBRARIES})
-add_dependencies(listen agv1_generate_messages_cpp)
+add_dependencies(listen AGVTASK1_generate_messages_cpp)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed

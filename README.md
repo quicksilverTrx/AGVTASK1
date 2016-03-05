@@ -19,7 +19,7 @@ Path planning
 
   to 
 
-  cv::Mat img=imread("/home/<username>/<catkin workspace>/src/AGVTASK1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
+  cv::Mat img=imread("/home/[username]/[catkin workspace]/src/AGVTASK1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
   
 
 4.In catkin_ws directory source the setup.bash file by 

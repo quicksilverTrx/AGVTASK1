@@ -15,7 +15,7 @@
 #include <sstream>
 using namespace cv;
 using namespace std;
-cv::Mat img=imread("/home/sourabha/catkin_ws/src/agv1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
+cv::Mat img=imread("/home/sourabha/catkin_ws/src/AGVTASK1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
 
 
 void pathCallback(const geometry_msgs::Point::ConstPtr &msg)// plots the points on the image 

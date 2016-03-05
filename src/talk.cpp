@@ -1,4 +1,5 @@
-#include "ros/ros.h"
+
+ #include "ros/ros.h"
 
 #include "geometry_msgs/Point.h"
 #include <stack>
@@ -54,34 +55,21 @@ int main(int argc,char **argv)
 		    for(int c = 0; c < 3; ++c) 
 		    {
 			   unsigned int pxl_val = (unsigned int)s.val[c];
-			   if(c==1)
-			   { 
-			     if(pxl_val==255) //finding green pixel
-			     { 
-				 if(count2==0)
-				   {
-					 x2=x;
-					 y2=y;
-					
-					 
-				   }
-			     }
-		       }
-			   if(c==2)
-			   {
-		        if(pxl_val<240&&pxl_val>236)
-			    {
-				 if(count1==0)
-				  {
-					 x1=x;
-					 y1=y;
-					count1=0;
-				  }
-     			}		
-    		  }
+			  if(s.val[0]<50&&s.val[1]>200&&s.val[2]<50&&count2==0)//find green pixel
+			{
+				x2=x;
+				y2=y;
+				count2=1;
+				
+			}
+			if(s.val[0]<50&&s.val[1]<50&&s.val[2]>200)// find red pixel
+			{
+				x1=x;
+				y1=y;
+			}
 		}
 		xr=x1;// storing the start and end points
-		yr=y1;
+		yr=y1-8;
 		xg=x2;
 		yg=y2;
 	  
@@ -102,7 +90,7 @@ while(!(ayv.top()==yg&&axv.top()==xg)) //path finding algorithm based on shortes
     {
      for(j=axv.top()-1;j<=axv.top()+1;j++)
        { 
-		 if(valid(i,j)==1&&flag[i][j]==0&&!(img.at<Vec3b>(i,j).val[0]==255&&img.at<Vec3b>(i,j).val[1]==255&&img.at<Vec3b>(i,j).val[2]==255))
+		 if(valid(i,j)==1&&flag[i][j]==0&&!(img.at<Vec3b>(i,j).val[0]>=210&&img.at<Vec3b>(i,j).val[1]>=210&&img.at<Vec3b>(i,j).val[2]>=210))
      	   { 
      	     if(cal(j,i)<dm)    // compares the distances of each neighbouring cell and moves to the lowest distance cell ( a bit like dijkstra)
       		  {                  //process continues for each cell where the distances(from destination) of neighbouring cells are calculated and the lowest is moved to 

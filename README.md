@@ -1,11 +1,14 @@
-# AGVTASK1
+##AGVTASK1
+
 Path planning 
-Prerequisites:
+
+#Prerequisites:
+
 1.opencv (preferably >2.4) must be installed 
 
 2.ROS INDIGO must be installed
 
-Working procedure :
+#Working procedure :
 1.clone this repository in a suitable destination (src folder )in catkin workspace
 
 2.open listen.cpp and talk.cpp in your favourite text editor 

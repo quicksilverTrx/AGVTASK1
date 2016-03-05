@@ -16,7 +16,7 @@
 
 using namespace cv;
 using namespace std;
-cv::Mat img=imread("/home/sourabha/catkin_ws/src/agv1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
+cv::Mat img=imread("/home/sourabha/catkin_ws/src/AGVTASK1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
 int flag[200][200]={0};
 std::stack<int> ax;
 std::stack<int> ay;

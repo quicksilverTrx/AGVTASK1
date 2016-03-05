@@ -1,0 +1,8 @@
+prefix=/home/sourabha/catkin_ws/install
+
+Name: agv1
+Description: Description of agv1
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/sourabha/catkin_ws/install/lib 
+Requires: 

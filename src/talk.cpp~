@@ -1,0 +1,174 @@
+#include "ros/ros.h"
+
+#include "geometry_msgs/Point.h"
+#include <stack>
+#include "opencv/cv.h"
+#include "opencv/highgui.h"
+#include "opencv2/opencv.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/opencv.hpp"
+#include<iostream>
+#include <image_transport/image_transport.h>
+#include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/image_encodings.h>
+#include <sstream>
+#include <typeinfo>
+
+using namespace cv;
+using namespace std;
+cv::Mat img=imread("/home/sourabha/catkin_ws/src/agv1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
+int flag[200][200]={0};
+std::stack<int> ax;
+std::stack<int> ay;
+std::stack<int> axv;
+std::stack<int> ayv;
+int xr,yr,xg,yg;
+typedef struct
+{
+  int i;
+  int j;
+}point;
+point p;
+int valid(int x,int y)       
+{
+	if(x<img.rows&&y<img.cols&&x>0&&y>0)
+	return 1;
+	else
+	return 0;
+}
+
+int main(int argc,char **argv)
+{ 
+  CvScalar s,c;
+  int x1,y1,x2,y2,count1=0,count2=0;
+  ros::init(argc, argv, "talk");
+  ros::NodeHandle t;
+  ros::Publisher chatter_pub = t.advertise<geometry_msgs::Point>("chatter",3000); //instead of path,name of my topic is chatter
+  ros::Rate loop_rate(10);
+  for(int y=0;y<img.rows;y++)
+	{
+		for(int x=0;x<img.cols;x++)
+		{ 
+			const cv::Vec3b& s = img.at<cv::Vec3b>(y, x);
+
+		for(int c = 0; c < 3; ++c) 
+		{
+			unsigned int pxl_val = (unsigned int)s.val[c];
+			if(c==1)
+			{ 
+			if(pxl_val==255)
+			{ 
+				if(count2==0)
+				{
+					x2=x;
+					y2=y;
+				}
+			}
+		    }
+			if(c==2)
+			{
+		    if(pxl_val<240&&pxl_val>236)
+			{
+				if(count1==0)
+				{
+					 x1=x;
+					 y1=y;
+					count1=0;
+				}
+			}		
+
+			}
+		}
+		xr=x1+3;
+		yr=y1-1;
+		xg=x2;
+		yg=y2;
+	    ax.push(xr);  
+		ay.push(yr);
+		axv.push(xr);
+		ayv.push(yr);	
+		}
+	}
+	//cout<<yr<<' '<<xr<<' '<<yg<<' '<<xg<<'\n';
+	
+	int flag1=0;
+ int c1=1,k=0;
+int i,j,cnt=1;
+while(!ax.empty() &&!ay.empty()&&k!=1)
+	{ k=0;
+	 cnt=1;
+	// c1=1;
+	 i=ax.top()+1;
+	 j=ay.top();
+	 ax.pop();
+	 ay.pop();
+		if(flag[ax.top()][ay.top()]==0)
+	 {	
+		   while(cnt<=8)
+		{ //if (flag[j][i]==1)break;
+			if((flag[j][i]==0&&valid(j,i)==1&&!(img.at<Vec3b>(j,i).val[0]==255&&img.at<Vec3b>(j,i).val  [1]==255&&img.at<Vec3b>(j,i).val[2]==255)))
+			{  
+	            ax.push(i);
+				ay.push(j);
+				if((i==xg)&&(j==yg))
+				{   
+					k=1;
+					//cout<<ay.top()<<' '<<ax.top()<<"  ";
+					cout<<"success"<<'\n';
+					break;
+				}
+			//	c1=0;
+			}
+			if(cnt<2)
+			{   cnt++;
+				j--;
+			}	
+			else if (cnt<4&&cnt>=2)
+			{	cnt++;
+				i--;
+			}
+			else if (cnt<6&&cnt>=4)
+			{
+				cnt++;
+				j++;
+			}
+			else if(cnt <=8&&cnt>=6)
+			{	cnt++;
+				i++;
+			}
+		 }
+ 	  }
+
+ 	if(/*c1==0*/k!=1&&ros::ok()&&flag[ay.top()][ax.top()]!=1)
+ 	{ 
+ 	 flag[ay.top()][ax.top()]=1;
+ 	 axv.push(ax.top());
+ 	 ayv.push(ay.top());
+ 	 //cout<<ay.top()<<' '<<ax.top()<<"  ";
+ 	 
+
+     geometry_msgs::Point t;
+      t.x=ay.top();
+      t.y=ax.top();
+ chatter_pub.publish(t);
+      //ROS_INFO("point sent:[%d,%d]",t.x,t.y);
+     ros::spinOnce();
+     loop_rate.sleep();
+ 	}
+	/*else if(c1==1&&k!=1)
+	{
+	 if(flag1==8)
+	{
+	  axv.pop();
+	  ayv.pop();
+	  flag1=0;
+	}
+	flag[ay.top()][ax.top()]=1; 
+	ax.pop();
+	ay.pop();
+	flag1++;
+	}*/
+ } 
+	 return 0;
+}
+

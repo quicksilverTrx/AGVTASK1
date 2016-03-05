@@ -1,0 +1,4 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(agv1)
+find_package(catkin REQUIRED roscpp std_msgs rospy genmsg  message_generation  cv_bridge image_transport  geometry_msgs  sensor_msgs )
+catkin_package()

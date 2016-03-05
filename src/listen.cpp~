@@ -1,0 +1,49 @@
+#include "ros/ros.h"
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include "geometry_msgs/Point.h"
+#include <stack>
+#include "opencv/cv.h"
+#include "opencv/highgui.h"
+#include "opencv2/opencv.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/opencv.hpp"
+#include<iostream>
+#include <image_transport/image_transport.h>
+#include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/image_encodings.h>
+#include <sstream>
+using namespace cv;
+using namespace std;
+cv::Mat img=imread("/home/sourabha/catkin_ws/src/agv1/src/ps1.png",CV_LOAD_IMAGE_COLOR);
+
+typedef struct
+{
+  int i;
+  int j;
+}point;
+point p;
+void pathCallback(const geometry_msgs::Point::ConstPtr &msg)
+{
+  p.i=(int)(msg->x);
+  p.j=(int)msg->y; 
+  ROS_INFO("point received:[%d],[%d]",p.i,p.j);
+  
+  img.at<Vec3b>(p.i,p.j)[0]=255;
+  img.at<Vec3b>(p.i,p.j)[1]=0;
+  img.at<Vec3b>(p.i,p.j)[2]=0;
+
+  imshow("mapped",img);
+  
+  waitKey(100);
+}
+
+
+int main(int argc, char **argv)
+{
+   ros::init(argc, argv, "listen");
+   ros::NodeHandle t;
+   ros::Subscriber sub = t.subscribe("chatter", 3000, pathCallback);
+   ros::spin();
+   return 0;
+}

@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "agv1")
+set(agv1_MAINTAINER "sourabha <sourabha@todo.todo>")
+set(agv1_DEPRECATED "")
+set(agv1_VERSION "0.0.0")
+set(agv1_BUILD_DEPENDS "cv_bridge" "geometry_msgs" "image_transport" "roscpp" "rospy" "sensor_msgs" "std_msgs" "std_msgs")
+set(agv1_RUN_DEPENDS "cv_bridge" "geometry_msgs" "image_transport" "roscpp" "rospy" "sensor_msgs" "std_msgs")
+set(agv1_BUILDTOOL_DEPENDS "catkin")
